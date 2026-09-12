@@ -1,0 +1,4264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Manufacturing Digital Twin</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+         DASHBOARD HEADER
+         ===================================================== -->
+
+    <header class="dashboard-header">
+
+        <div>
+            <div class="brand-title">
+                AI MANUFACTURING DIGITAL TWIN
+            </div>
+
+            <div class="brand-subtitle">
+                Intelligent Tool Health & Predictive Maintenance Platform
+            </div>
+        </div>
+
+        <div class="system-status">
+            <span class="status-dot"></span>
+            SYSTEM ONLINE
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         DASHBOARD OVERVIEW
+         ===================================================== -->
+
+    <section class="overview-grid">
+
+        <div class="dashboard-card">
+
+            <div class="card-label">
+                MACHINE STATUS
+            </div>
+
+            <div class="card-value">
+                OPERATIONAL
+            </div>
+
+            <div class="card-description">
+                CNC Milling System
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="card-label">
+                PREDICTED RUL
+            </div>
+
+            <div class="card-value">
+
+               {% if prediction is not none %}
+    {{ "%.2f"|format(prediction) }}
+{% else %}
+    --
+{% endif %}
+
+            </div>
+
+            <div class="card-description">
+                Remaining Useful Life
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="card-label">
+                HEALTH STATUS
+            </div>
+
+            <div class="card-value">
+
+                {% if health_status is defined %}
+                    {{ health_status }}
+                {% else %}
+                    WAITING
+                {% endif %}
+
+            </div>
+
+            <div class="card-description">
+                AI Model Assessment
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         RUL MONITORING PANEL
+         ========================================================= -->
+
+    <section class="rul-monitoring">
+
+        <div class="section-heading">
+
+            <div>
+
+                <div class="section-label">
+                    PREDICTIVE MAINTENANCE
+                </div>
+
+                <h2>
+                    Remaining Useful Life Monitoring
+                </h2>
+
+            </div>
+
+            <div class="live-indicator">
+                <span></span>
+                LIVE MODEL OUTPUT
+            </div>
+
+        </div>
+
+
+        <div class="rul-panel">
+
+            <div class="rul-main">
+
+                <div class="rul-title">
+                    CURRENT PREDICTED RUL
+                </div>
+
+                <div class="rul-number">
+
+                    {% if prediction is defined %}
+                        {{ prediction }}
+                    {% else %}
+                        --
+                    {% endif %}
+
+                    <span>cycles</span>
+
+                </div>
+
+                <div class="rul-description">
+
+                    Estimated remaining useful life of the CNC
+                    milling system based on the trained Random
+                    Forest predictive model.
+
+                </div>
+
+            </div>
+
+
+            <div class="rul-status">
+
+                <div class="status-heading">
+                    MAINTENANCE CONDITION
+                </div>
+
+                {% if health_status is defined %}
+
+                    {% if health_status == "HEALTHY" %}
+
+                        <div class="maintenance-message healthy-message">
+                            NORMAL OPERATION
+                        </div>
+
+                        <p>
+                            Machine condition is currently within
+                            the healthy operating range.
+                        </p>
+
+                    {% elif health_status == "WARNING" %}
+
+                        <div class="maintenance-message warning-message">
+                            INSPECTION RECOMMENDED
+                        </div>
+
+                        <p>
+                            Machine degradation is indicated.
+                            Schedule preventive inspection.
+                        </p>
+
+                    {% else %}
+
+                        <div class="maintenance-message critical-message">
+                            MAINTENANCE REQUIRED
+                        </div>
+
+                        <p>
+                            Low predicted remaining life.
+                            Immediate maintenance is recommended.
+                        </p>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <div class="maintenance-message">
+                        AWAITING PREDICTION
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         LIVE MACHINE TELEMETRY
+         ========================================================= -->
+
+    <section class="telemetry-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <div class="section-label">
+                    MACHINE TELEMETRY
+                </div>
+
+                <h2>
+                    Live Machine Signal Overview
+                </h2>
+
+            </div>
+
+            <div class="live-indicator">
+                <span></span>
+                DATASET SIGNALS
+            </div>
+
+        </div>
+
+
+        <div class="telemetry-grid">
+
+
+            <!-- DRIVING AXLE X -->
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L1 — MEAN
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle X L1 - mean", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Mean Drive Current
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L2 — MEAN
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle X L2 - mean", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Mean Drive Current
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L3 — MEAN
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle X L3 - mean", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Mean Drive Current
+                </div>
+
+            </div>
+
+
+            <!-- X STD -->
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L1 — STD
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle X L1 - std", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Current Variation
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L2 — STD
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle X L2 - std", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Current Variation
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L3 — STD
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle X L3 - std", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Current Variation
+                </div>
+
+            </div>
+
+
+            <!-- X MAX -->
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L1 — MAX
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle X L1 - max", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Maximum Current
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L2 — MAX
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle X L2 - max", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Maximum Current
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L3 — MAX
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle X L3 - max", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Maximum Current
+                </div>
+
+            </div>
+
+
+            <!-- X SKEW -->
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L1 — SKEW
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.3f"|format(default_values.get("Current - Driving axle X L1 - skew", 0)) }}
+                </div>
+
+                <div class="telemetry-description">
+                    Signal Asymmetry
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE X L3 — SKEW
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.3f"|format(default_values.get("Current - Driving axle X L3 - skew", 0)) }}
+                </div>
+
+                <div class="telemetry-description">
+                    Signal Asymmetry
+                </div>
+
+            </div>
+
+
+            <!-- DRIVING AXLE Y -->
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE Y L1 — MEAN
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle Y L1 - mean", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Mean Drive Current
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE Y L2 — MEAN
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle Y L2 - mean", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Mean Drive Current
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE Y L3 — MEAN
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle Y L3 - mean", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Mean Drive Current
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE Y L1 — STD
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle Y L1 - std", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Current Variation
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE Y L2 — STD
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle Y L2 - std", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Current Variation
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    DRIVING AXLE Y L3 — STD
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Driving axle Y L3 - std", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Current Variation
+                </div>
+
+            </div>
+
+
+            <!-- SPINDLE -->
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    SPINDLE L1 — MEAN
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Spindle L1 - mean", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Mean Spindle Current
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    SPINDLE L2 — MEAN
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Spindle L2 - mean", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Mean Spindle Current
+                </div>
+
+            </div>
+
+
+            <div class="telemetry-card">
+
+                <div class="telemetry-label">
+                    SPINDLE L3 — MEAN
+                </div>
+
+                <div class="telemetry-value">
+                    {{ "%.2f"|format(default_values.get("Current - Spindle L3 - mean", 0)) }}
+                    <span>A</span>
+                </div>
+
+                <div class="telemetry-description">
+                    Mean Spindle Current
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="dashboard-container">
+
+        <section class="page-introduction">
+
+            <h1>
+                Tool Health Monitoring
+            </h1>
+
+            <p>
+                Enter the current machine signal features below
+                to estimate the remaining useful life of the
+                cutting tool using the trained machine learning model.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             PREDICTION FORM
+             ================================================= -->
+
+        <form action="/predict"
+              method="POST"
+              class="prediction-form">
+
+
+            <!-- DRIVING AXLE X -->
+
+            <section class="sensor-section">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            01
+                        </span>
+
+                        <h2>
+                            Driving Axle X
+                        </h2>
+
+                    </div>
+
+                    <span class="sensor-status">
+                        SIGNAL INPUT
+                    </span>
+
+                </div>
+
+
+                <div class="input-grid">
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L1 — Mean
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L1 - mean"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L2 — Mean
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L2 - mean"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L3 — Mean
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L3 - mean"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L1 — Standard Deviation
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L1 - std"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L2 — Standard Deviation
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L2 - std"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L3 — Standard Deviation
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L3 - std"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L1 — Maximum
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L1 - max"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L2 — Maximum
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L2 - max"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L3 — Maximum
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L3 - max"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L1 — Skewness
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L1 - skew"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle X L3 — Skewness
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle X L3 - skew"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DRIVING AXLE Y -->
+
+            <section class="sensor-section">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            02
+                        </span>
+
+                        <h2>
+                            Driving Axle Y
+                        </h2>
+
+                    </div>
+
+                    <span class="sensor-status">
+                        SIGNAL INPUT
+                    </span>
+
+                </div>
+
+
+                <div class="input-grid">
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle Y L1 — Mean
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle Y L1 - mean"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle Y L2 — Mean
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle Y L2 - mean"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle Y L3 — Mean
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle Y L3 - mean"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle Y L1 — Standard Deviation
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle Y L1 - std"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle Y L2 — Standard Deviation
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle Y L2 - std"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Driving Axle Y L3 — Standard Deviation
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Driving axle Y L3 - std"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SPINDLE -->
+
+            <section class="sensor-section">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            03
+                        </span>
+
+                        <h2>
+                            Spindle
+                        </h2>
+
+                    </div>
+
+                    <span class="sensor-status">
+                        SIGNAL INPUT
+                    </span>
+
+                </div>
+
+
+                <div class="input-grid spindle-grid">
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Spindle L1 — Mean
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Spindle L1 - mean"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Spindle L2 — Mean
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Spindle L2 - mean"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Spindle L3 — Mean
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="Current - Spindle L3 - mean"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- AI PREDICTION -->
+
+            <div class="prediction-action">
+
+                <div>
+
+                    <h2>
+                        AI Tool Health Analysis
+                    </h2>
+
+                    <p>
+                        Submit the current sensor measurements
+                        to calculate the tool's estimated
+                        remaining useful life.
+                    </p>
+
+                </div>
+
+                <button type="submit"
+                        class="predict-button">
+
+                    RUN AI PREDICTION
+
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- =================================================
+             PREDICTION RESULT
+             ================================================= -->
+
+        {% if prediction is defined %}
+
+        <section class="result-section">
+
+            <div class="result-header">
+
+                <div>
+
+                    <span class="result-label">
+                        AI PREDICTION RESULT
+                    </span>
+
+                    <h2>
+                        Tool Health Assessment
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="result-grid">
+
+
+                <div class="result-card">
+
+                    <span class="result-card-label">
+                        REMAINING USEFUL LIFE
+                    </span>
+
+                    <strong>
+                        {{ prediction }}
+                    </strong>
+
+                    <span>
+                        Estimated tool life
+                    </span>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <span class="result-card-label">
+                        MACHINE HEALTH
+                    </span>
+
+                    <strong>
+                        {{ health_status }}
+                    </strong>
+
+                    <span>
+                        AI-based health assessment
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+
+        AI Manufacturing Digital Twin
+        <span>•</span>
+        Predictive Maintenance System
+
+    </footer>
+
+
+    <!-- =========================================================
+         RUL HEALTH GAUGE
+         ========================================================= -->
+
+    <section class="health-assessment">
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-tag">
+                    MACHINE INTELLIGENCE
+                </span>
+
+                <h2>
+                    RUL Health Gauge
+                </h2>
+
+                <p>
+                    Real-time remaining useful life assessment generated
+                    by the trained Random Forest predictive model.
+                </p>
+
+            </div>
+
+            <div class="health-indicator">
+
+                <span class="health-dot"></span>
+
+                MODEL ACTIVE
+
+            </div>
+
+        </div>
+
+
+        <div class="gauge-panel">
+
+
+            <div class="gauge-container">
+
+                <div class="gauge-title">
+                    REMAINING USEFUL LIFE
+                </div>
+
+
+                <div class="gauge"
+                     data-rul="{{ prediction if prediction is not none else '' }}"
+                     data-health="{{ health_status if health_status else 'WAITING' }}">
+
+                    <div class="gauge-track"></div>
+
+                    <div class="gauge-progress"></div>
+
+                    <div class="gauge-needle">
+
+                        <div class="needle"></div>
+
+                        <div class="needle-center"></div>
+
+                    </div>
+
+
+                    <div class="gauge-center">
+
+                        <div class="gauge-value">
+
+                            {% if prediction is not none %}
+                                {{ "%.2f"|format(prediction) }}
+                            {% else %}
+                                --
+                            {% endif %}
+
+                        </div>
+
+                        <div class="gauge-unit">
+                            CYCLES
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="gauge-scale">
+
+                    <span>0</span>
+                    <span>10</span>
+                    <span>20</span>
+                    <span>30</span>
+                    <span>40</span>
+                    <span>50+</span>
+
+                </div>
+
+
+                <div class="gauge-caption">
+                    ESTIMATED REMAINING MACHINE LIFE
+                </div>
+
+            </div>
+
+
+            <div class="gauge-status">
+
+                <div class="status-label">
+                    CURRENT MACHINE CONDITION
+                </div>
+
+
+                {% if health_status %}
+
+                    {% if health_status == "HEALTHY" %}
+
+                        <div class="gauge-health healthy">
+                            HEALTHY
+                        </div>
+
+                        <div class="health-indicator-line healthy-line">
+                            <span></span>
+                            NORMAL OPERATING CONDITION
+                        </div>
+
+                        <p>
+                            The predicted remaining useful life is within
+                            the healthy operating range. Continue normal
+                            machine operation and monitoring.
+                        </p>
+
+
+                    {% elif health_status == "WARNING" %}
+
+                        <div class="gauge-health warning">
+                            WARNING
+                        </div>
+
+                        <div class="health-indicator-line warning-line">
+                            <span></span>
+                            PREVENTIVE INSPECTION RECOMMENDED
+                        </div>
+
+                        <p>
+                            The AI model indicates measurable machine
+                            degradation. Preventive inspection should be
+                            planned before continued high-load operation.
+                        </p>
+
+
+                    {% else %}
+
+                        <div class="gauge-health critical">
+                            CRITICAL
+                        </div>
+
+                        <div class="health-indicator-line critical-line">
+                            <span></span>
+                            MAINTENANCE REQUIRED
+                        </div>
+
+                        <p>
+                            The predicted remaining useful life is low.
+                            Immediate maintenance inspection is recommended.
+                        </p>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <div class="gauge-health waiting">
+                        WAITING
+                    </div>
+
+                    <div class="health-indicator-line">
+                        <span></span>
+                        AWAITING AI PREDICTION
+                    </div>
+
+                    <p>
+                        Run the AI prediction using the current machine
+                        signal measurements to calculate remaining useful life.
+                    </p>
+
+                {% endif %}
+
+
+                <div class="gauge-legend">
+
+                    <div class="legend-item">
+                        <span class="legend-dot critical-dot"></span>
+                        CRITICAL
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="legend-dot warning-dot"></span>
+                        WARNING
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="legend-dot healthy-dot"></span>
+                        HEALTHY
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         DEFAULT MODEL VALUES
+         ========================================================= -->
+
+    <script id="model-default-values" type="application/json">
+        {{ default_values | default({}) | tojson }}
+    </script>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const dataElement =
+                document.getElementById("model-default-values");
+
+            if (!dataElement) {
+                return;
+            }
+
+            let defaultValues = {};
+
+            try {
+
+                defaultValues =
+                    JSON.parse(dataElement.textContent);
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load default model values:",
+                    error
+                );
+
+                return;
+            }
+
+
+            const inputs =
+                document.querySelectorAll("input[name]");
+
+
+            inputs.forEach(function (input) {
+
+                const fieldName =
+                    input.getAttribute("name");
+
+
+                if (
+                    Object.prototype.hasOwnProperty.call(
+                        defaultValues,
+                        fieldName
+                    ) &&
+                    defaultValues[fieldName] !== null &&
+                    defaultValues[fieldName] !== ""
+                ) {
+
+                    input.value =
+                        defaultValues[fieldName];
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+
+    <!-- =========================================================
+         RUL GAUGE SCRIPT
+         ========================================================= -->
+
+
+
+   
+    <!-- =========================================================
+     MACHINE HEALTH ANALYTICS
+     ========================================================= -->
+
+
+    <!-- =========================================================
+     MACHINE HEALTH ANALYTICS
+     ========================================================= -->
+
+<section class="health-analytics-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-tag">
+                MACHINE HEALTH
+            </span>
+
+            <h2>
+                Predictive Health Analytics
+            </h2>
+
+            <p>
+                Automated analysis of historical AI-based
+                remaining useful life predictions.
+            </p>
+
+        </div>
+
+        <div class="history-status">
+
+            <span class="history-dot"></span>
+
+            AI ANALYTICS
+
+        </div>
+
+    </div>
+
+
+    <div class="analytics-grid">
+
+
+        <!-- =================================================
+             RUL TREND
+             ================================================= -->
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-label">
+                RUL TREND
+            </div>
+
+            <div class="analytics-card-value">
+
+                {% if rul_history and rul_history|length >= 2 %}
+
+                    {% set latest =
+                        rul_history[-1].rul
+                    %}
+
+                    {% set previous =
+                        rul_history[-2].rul
+                    %}
+
+                    {% if latest > previous %}
+
+                        IMPROVING
+
+                    {% elif latest < previous %}
+
+                        DECLINING
+
+                    {% else %}
+
+                        STABLE
+
+                    {% endif %}
+
+                {% else %}
+
+                    WAITING
+
+                {% endif %}
+
+            </div>
+
+            <div class="analytics-card-description">
+
+                Change in predicted remaining useful life
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             RUL CHANGE
+             ================================================= -->
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-label">
+                RUL CHANGE
+            </div>
+
+            <div class="analytics-card-value">
+
+                {% if rul_history and rul_history|length >= 2 %}
+
+                    {% set latest =
+                        rul_history[-1].rul
+                    %}
+
+                    {% set previous =
+                        rul_history[-2].rul
+                    %}
+
+                    {{ "%.2f"|format(latest - previous) }}
+
+                    <span class="analytics-unit">
+                        CYCLES
+                    </span>
+
+                {% else %}
+
+                    --
+
+                {% endif %}
+
+            </div>
+
+            <div class="analytics-card-description">
+
+                Difference from previous AI assessment
+
+            </div>
+<div class="analytics-card-description">
+    Difference from previous AI assessment
+</div>
+
+</div>
+
+
+<!-- =================================================
+     CURRENT HEALTH STATUS
+     ================================================= -->
+
+<div class="analytics-card">
+
+    <div class="analytics-card-label">
+        CURRENT HEALTH
+    </div>
+
+    <div class="analytics-card-value">
+
+        {% if rul_history and rul_history|length > 0 %}
+
+            {{ rul_history[-1].health_status }}
+
+        {% else %}
+
+            WAITING
+
+        {% endif %}
+
+    </div>
+
+    <div class="analytics-card-description">
+        Latest health classification from the AI assessment
+    </div>
+
+</div>
+        
+
+
+        <!-- =================================================
+             PREDICTION STABILITY
+             ================================================= -->
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-label">
+                PREDICTION STABILITY
+            </div>
+
+            <div class="analytics-card-value">
+
+                {% if rul_history and rul_history|length >= 2 %}
+
+                    {% set ruls =
+                        rul_history
+                        |map(attribute='rul')
+                        |list
+                    %}
+
+                    {% set min_rul =
+                        ruls|min
+                    %}
+
+                    {% set max_rul =
+                        ruls|max
+                    %}
+
+                    {% if (max_rul - min_rul) <= 2 %}
+
+                        HIGH
+
+                    {% elif (max_rul - min_rul) <= 5 %}
+
+                        MODERATE
+
+                    {% else %}
+
+                        LOW
+
+                    {% endif %}
+
+                {% else %}
+
+                    WAITING
+
+                {% endif %}
+
+            </div>
+
+            <div class="analytics-card-description">
+
+                Consistency of recent model predictions
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MAINTENANCE RISK
+             ================================================= -->
+
+        <div class="analytics-card">
+
+            <div class="analytics-card-label">
+                MAINTENANCE RISK
+            </div>
+
+            <div class="analytics-card-value">
+
+                {% if prediction is not none %}
+
+                    {% if prediction <= 10 %}
+
+                        CRITICAL
+
+                    {% elif prediction <= 30 %}
+
+                        MODERATE
+
+                    {% else %}
+
+                        LOW
+
+                    {% endif %}
+
+                {% else %}
+
+                    WAITING
+
+                {% endif %}
+
+            </div>
+
+            <div class="analytics-card-description">
+
+                AI-estimated maintenance risk based on RUL
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     MAINTENANCE RECOMMENDATION
+     ========================================================= -->
+
+<section class="maintenance-recommendation-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-tag">
+                DECISION SUPPORT
+            </span>
+
+            <h2>
+                Maintenance Recommendation
+            </h2>
+
+            <p>
+                AI-assisted maintenance guidance based on
+                current machine health and predicted RUL.
+            </p>
+
+        </div>
+
+        <div class="history-status">
+
+            <span class="history-dot"></span>
+
+            AI DECISION
+
+        </div>
+
+    </div>
+
+
+    <div class="recommendation-card">
+
+        {% if prediction is not none %}
+
+            {% if prediction <= 10 %}
+
+                <div class="recommendation-status critical">
+                    IMMEDIATE MAINTENANCE
+                </div>
+
+                <p>
+                    The AI model indicates critically low
+                    remaining useful life. Immediate inspection
+                    and maintenance are recommended before
+                    continued operation.
+                </p>
+
+            {% elif prediction <= 30 %}
+
+                <div class="recommendation-status warning">
+                    PLAN INSPECTION
+                </div>
+
+                <p>
+                    The machine is approaching a reduced
+                    remaining useful life. Preventive inspection
+                    should be planned to avoid unexpected
+                    downtime.
+                </p>
+
+            {% else %}
+
+                <div class="recommendation-status healthy">
+                    NORMAL OPERATION
+                </div>
+
+                <p>
+                    The machine is currently operating within
+                    the healthy predicted RUL range. Continue
+                    operation while monitoring future AI
+                    predictions.
+                </p>
+
+            {% endif %}
+
+        {% else %}
+
+            <div class="recommendation-status">
+                WAITING FOR AI PREDICTION
+            </div>
+
+            <p>
+                Generate an AI prediction to receive
+                maintenance guidance.
+            </p>
+
+        {% endif %}
+
+    </div>
+            
+
+
+        <!-- =================================================
+             RECOMMENDED ACTION
+             ================================================= -->
+
+        {% if prediction is not none %}
+
+            <div class="recommended-action">
+
+                <div class="recommended-action-label">
+                    RECOMMENDED ACTION
+                </div>
+
+
+                {% if prediction <= 10 %}
+
+                    <div class="recommended-action-text">
+                        Stop high-load operation and perform
+                        immediate machine and tool inspection.
+                    </div>
+
+
+                {% elif prediction <= 30 %}
+
+                    <div class="recommended-action-text">
+                        Schedule preventive inspection and
+                        closely monitor subsequent RUL predictions.
+                    </div>
+
+
+                {% else %}
+
+                    <div class="recommended-action-text">
+                        Continue normal CNC operation and monitor
+                        subsequent AI-based RUL assessments.
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     RUL HISTORY STATISTICS
+     ========================================================= -->
+
+<section class="rul-statistics-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-tag">
+                PREDICTION METRICS
+            </span>
+
+            <h2>
+                RUL History Statistics
+            </h2>
+
+            <p>
+                Summary of historical AI-based RUL assessments.
+            </p>
+
+        </div>
+
+        <div class="history-status">
+
+            <span class="history-dot"></span>
+
+            MODEL HISTORY
+
+        </div>
+
+    </div>
+
+
+    <div class="rul-statistics-grid">
+
+        <!-- LATEST RUL -->
+
+        <div class="rul-stat-card">
+
+            <div class="rul-stat-label">
+                LATEST RUL
+            </div>
+
+            <div class="rul-stat-value">
+
+                {% if rul_history and rul_history|length > 0 %}
+
+                    {{ "%.2f"|format(rul_history[-1].rul) }}
+
+                    <span>CYCLES</span>
+
+                {% else %}
+
+                    --
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- AVERAGE RUL -->
+
+        <div class="rul-stat-card">
+
+            <div class="rul-stat-label">
+                AVERAGE RUL
+            </div>
+
+            <div class="rul-stat-value">
+
+                {% if rul_history and rul_history|length > 0 %}
+
+                    {% set ruls =
+                        rul_history
+                        |map(attribute='rul')
+                        |list
+                    %}
+
+                    {{ "%.2f"|format(ruls|sum / ruls|length) }}
+
+                    <span>CYCLES</span>
+
+                {% else %}
+
+                    --
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- MINIMUM RUL -->
+
+        <div class="rul-stat-card">
+
+            <div class="rul-stat-label">
+                MINIMUM RUL
+            </div>
+
+            <div class="rul-stat-value">
+
+                {% if rul_history and rul_history|length > 0 %}
+
+                    {% set ruls =
+                        rul_history
+                        |map(attribute='rul')
+                        |list
+                    %}
+
+                    {{ "%.2f"|format(ruls|min) }}
+
+                    <span>CYCLES</span>
+
+                {% else %}
+
+                    --
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- TOTAL ASSESSMENTS -->
+
+        <div class="rul-stat-card">
+
+            <div class="rul-stat-label">
+                TOTAL ASSESSMENTS
+            </div>
+
+            <div class="rul-stat-value">
+
+                {{ rul_history|length }}
+
+                <span>RUNS</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+    <!-- =========================================================
+         RUL TREND CHART
+         ========================================================= -->
+         <!-- =========================================================
+     RUL TREND CHART DISPLAY
+     ========================================================= -->
+
+<section class="rul-chart-section">
+
+    <div class="section-header">
+
+        <div>
+            <span class="section-tag">
+                PREDICTION TREND
+            </span>
+
+            <h2>
+                RUL Prediction History
+            </h2>
+
+            <p>
+                Historical remaining useful life predictions generated by the AI model.
+            </p>
+        </div>
+
+        <div class="history-status">
+            <span class="history-dot"></span>
+            MODEL HISTORY
+        </div>
+
+    </div>
+
+
+    <div class="chart-container">
+
+        <canvas id="rulTrendChart"></canvas>
+
+    </div>
+
+</section>
+<!-- =========================================================
+     MACHINE CONDITION MONITORING
+     ========================================================= -->
+
+<section class="condition-monitoring-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-tag">
+                CONDITION MONITORING
+            </span>
+
+            <h2>
+                Machine Condition Monitoring
+            </h2>
+
+            <p>
+                Historical machine signal behaviour associated
+                with AI-based RUL assessments.
+            </p>
+
+        </div>
+
+        <div class="history-status">
+
+            <span class="history-dot"></span>
+
+            TELEMETRY HISTORY
+
+        </div>
+
+    </div>
+
+
+    <div class="condition-chart-card">
+
+        <div class="analytics-card-label">
+            SPINDLE CURRENT TREND
+        </div>
+        <!-- TELEMETRY HISTORY STATISTICS -->
+
+<div class="telemetry-stats-grid">
+
+    <div class="telemetry-stat-card">
+
+        <div class="telemetry-stat-label">
+            LATEST SPINDLE CURRENT
+        </div>
+
+        <div class="telemetry-stat-value">
+            <span id="latestSpindleCurrent">--</span>
+            <span class="telemetry-unit">A</span>
+        </div>
+
+    </div>
+
+
+    <div class="telemetry-stat-card">
+
+        <div class="telemetry-stat-label">
+            LATEST AXLE X CURRENT
+        </div>
+
+        <div class="telemetry-stat-value">
+            <span id="latestAxleXCurrent">--</span>
+            <span class="telemetry-unit">A</span>
+        </div>
+
+    </div>
+
+
+    <div class="telemetry-stat-card">
+
+        <div class="telemetry-stat-label">
+            PEAK SPINDLE CURRENT
+        </div>
+
+        <div class="telemetry-stat-value">
+            <span id="peakSpindleCurrent">--</span>
+            <span class="telemetry-unit">A</span>
+        </div>
+
+    </div>
+
+
+    <div class="telemetry-stat-card">
+
+        <div class="telemetry-stat-label">
+            TOTAL TELEMETRY ASSESSMENTS
+        </div>
+
+        <div class="telemetry-stat-value">
+            <span id="telemetryAssessmentCount">--</span>
+            <span class="telemetry-unit">RUNS</span>
+        </div>
+
+    </div>
+
+
+
+
+    
+
+
+
+        <div class="condition-chart-container">
+
+            <canvas id="spindleTrendChart"></canvas>
+
+        </div>
+        <div class="condition-chart-card">
+
+    <div class="analytics-card-label">
+        DRIVING AXLE X CURRENT TREND
+    </div>
+   
+    <div class="condition-chart-container">
+
+        <div style="height: 320px;">
+
+    <canvas id="drivingAxleXTrendChart"></canvas>
+
+</div>
+
+    </div>
+
+</div>
+ <div class="condition-chart-card">
+
+    <div class="analytics-card-label">
+        DRIVING AXLE Y CURRENT TREND
+    </div>
+
+    <div class="condition-chart-container">
+
+        <canvas id="drivingAxleYTrendChart"></canvas>
+
+    </div>
+
+</div>
+
+
+
+    </div>
+    <!-- =====================================================
+     TELEMETRY HISTORY TABLE
+     ===================================================== -->
+
+<div class="condition-chart-card">
+
+    <div class="analytics-card-label">
+        TELEMETRY HISTORY TABLE
+    </div>
+
+    <div class="telemetry-table-container">
+
+        <table class="telemetry-history-table">
+
+            <thead>
+                <tr>
+                    <th>ASSESSMENT</th>
+<th>TIMESTAMP</th>
+<th>RUL (CYCLES)</th>
+<th>HEALTH</th>
+<th>SPINDLE CURRENT (A)</th>
+<th>AXLE X CURRENT (A)</th>
+<th>AXLE Y CURRENT (A)</th>
+                </tr>
+            </thead>
+
+            <tbody id="telemetryHistoryTableBody">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script id="rul-history-data" type="application/json">
+
+        {{ rul_history | tojson }}
+
+    </script>
+    <script id="telemetry-history-data" type="application/json">
+
+    {{ telemetry_history | default([]) | tojson }}
+
+</script>
+
+
+   <script>
+
+    const rulHistory = JSON.parse(
+        document.getElementById("rul-history-data").textContent
+    );
+
+
+    if (rulHistory && rulHistory.length > 0) {
+
+        const canvas = document.getElementById("rulTrendChart");
+
+
+        if (canvas) {
+
+            // =====================================================
+            // CHART DATA
+            // =====================================================
+
+            const labels = rulHistory.map(
+                record => "#" + record.assessment
+            );
+
+
+            const rulValues = rulHistory.map(
+                record => Number(record.rul)
+            );
+
+
+            // =====================================================
+            // POINT COLORS BASED ON HEALTH
+            // =====================================================
+
+            const pointColors = rulHistory.map(
+                record => {
+
+                    const status =
+                        String(record.health_status).toLowerCase();
+
+
+                    if (status === "critical") {
+                        return "#ef4444";
+                    }
+
+
+                    if (status === "warning") {
+                        return "#f59e0b";
+                    }
+
+
+                    return "#22c55e";
+                }
+            );
+
+
+            // =====================================================
+            // WARNING THRESHOLD
+            // =====================================================
+
+            const warningThreshold =
+                rulHistory.map(() => 30);
+
+
+            // =====================================================
+            // CRITICAL THRESHOLD
+            // =====================================================
+
+            const criticalThreshold =
+                rulHistory.map(() => 10);
+
+
+            // =====================================================
+            // CREATE CHART
+            // =====================================================
+
+            new Chart(
+                canvas,
+                {
+
+                    type: "line",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [
+
+                            // ---------------------------------
+                            // ACTUAL RUL
+                            // ---------------------------------
+
+                            {
+                                label: "Remaining Useful Life",
+
+                                data: rulValues,
+
+                                borderColor: "#f59e0b",
+
+                                backgroundColor:
+                                    "rgba(245, 158, 11, 0.12)",
+
+                                pointBackgroundColor:
+                                    pointColors,
+
+                                pointBorderColor:
+                                    pointColors,
+
+                                pointRadius: 6,
+
+                                pointHoverRadius: 8,
+
+                                borderWidth: 3,
+
+                                tension: 0.35,
+
+                                fill: true
+                            },
+
+
+                            // ---------------------------------
+                            // WARNING THRESHOLD
+                            // ---------------------------------
+
+                            {
+                                label: "Warning Threshold",
+
+                                data: warningThreshold,
+
+                                borderColor: "#f59e0b",
+
+                                borderWidth: 1.5,
+
+                                borderDash: [6, 6],
+
+                                pointRadius: 0,
+
+                                fill: false
+                            },
+
+
+                            // ---------------------------------
+                            // CRITICAL THRESHOLD
+                            // ---------------------------------
+
+                            {
+                                label: "Critical Threshold",
+
+                                data: criticalThreshold,
+
+                                borderColor: "#ef4444",
+
+                                borderWidth: 1.5,
+
+                                borderDash: [6, 6],
+
+                                pointRadius: 0,
+
+                                fill: false
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+
+                        interaction: {
+
+                            mode: "index",
+
+                            intersect: false
+                        },
+
+
+                        plugins: {
+
+                            legend: {
+
+                                display: true,
+
+                                position: "top",
+
+                                labels: {
+
+                                    usePointStyle: true,
+
+                                    padding: 18,
+
+                                    font: {
+                                        size: 13
+                                    }
+                                }
+                            },
+
+
+                            tooltip: {
+
+                                callbacks: {
+
+                                    title: function(context) {
+
+                                        return "Assessment " +
+                                            context[0].label;
+                                    },
+
+
+                                    label: function(context) {
+
+                                        return (
+                                            context.dataset.label +
+                                            ": " +
+                                            context.parsed.y.toFixed(2) +
+                                            " cycles"
+                                        );
+                                    }
+                                }
+                            }
+                        },
+
+
+                        scales: {
+
+                            x: {
+
+                                title: {
+
+                                    display: true,
+
+                                    text: "AI Assessment"
+                                },
+
+                                grid: {
+
+                                    color:
+                                        "rgba(148, 163, 184, 0.08)"
+                                }
+                            },
+
+
+                            y: {
+
+                                min: 0,
+
+                                max: 50,
+
+                                title: {
+
+                                    display: true,
+
+                                    text:
+                                        "Remaining Useful Life (Cycles)"
+                                },
+
+                                grid: {
+
+                                    color:
+                                        "rgba(148, 163, 184, 0.10)"
+                                },
+
+
+                                ticks: {
+
+                                    stepSize: 5
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+    }
+
+</script>
+<script>
+
+    const telemetryElement =
+        document.getElementById("telemetry-history-data");
+
+    let telemetryHistory = [];
+
+    if (telemetryElement) {
+
+        try {
+
+            telemetryHistory =
+                JSON.parse(
+                    telemetryElement.textContent
+                );
+
+        } catch (error) {
+
+            console.error(
+                "Could not load telemetry history:",
+                error
+            );
+
+        }
+
+    }
+
+
+    if (
+        telemetryHistory &&
+        telemetryHistory.length > 0
+    ) {
+
+        const canvas =
+            document.getElementById(
+                "spindleTrendChart"
+            );
+
+
+        if (canvas) {
+
+            const labels =
+                telemetryHistory.map(
+                    (record, index) =>
+                        "#" + (index + 1)
+                );
+
+
+            const spindleL1 =
+                telemetryHistory.map(
+                    record =>
+                        Number(
+                            record[
+                                "Current - Spindle L1 - mean"
+                            ]
+                        )
+                );
+
+
+            const spindleL2 =
+                telemetryHistory.map(
+                    record =>
+                        Number(
+                            record[
+                                "Current - Spindle L2 - mean"
+                            ]
+                        )
+                );
+
+
+            const spindleL3 =
+                telemetryHistory.map(
+                    record =>
+                        Number(
+                            record[
+                                "Current - Spindle L3 - mean"
+                            ]
+                        )
+                );
+
+
+            new Chart(
+                canvas,
+                {
+
+                    type: "line",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [
+
+                            {
+                                label:
+                                    "Spindle L1",
+
+                                data:
+                                    spindleL1,
+
+                                borderColor:
+                                    "#38bdf8",
+
+                                backgroundColor:
+                                    "rgba(56, 189, 248, 0.08)",
+
+                                borderWidth: 2,
+
+                                pointRadius: 4,
+
+                                tension: 0.35,
+
+                                fill: false
+                            },
+
+
+                            {
+                                label:
+                                    "Spindle L2",
+
+                                data:
+                                    spindleL2,
+
+                                borderColor:
+                                    "#a78bfa",
+
+                                backgroundColor:
+                                    "rgba(167, 139, 250, 0.08)",
+
+                                borderWidth: 2,
+
+                                pointRadius: 4,
+
+                                tension: 0.35,
+
+                                fill: false
+                            },
+
+
+                            {
+                                label:
+                                    "Spindle L3",
+
+                                data:
+                                    spindleL3,
+
+                                borderColor:
+                                    "#34d399",
+
+                                backgroundColor:
+                                    "rgba(52, 211, 153, 0.08)",
+
+                                borderWidth: 2,
+
+                                pointRadius: 4,
+
+                                tension: 0.35,
+
+                                fill: false
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        interaction: {
+
+                            mode: "index",
+
+                            intersect: false
+
+                        },
+
+
+                        plugins: {
+
+                            legend: {
+
+                                display: true,
+
+                                position: "top",
+
+                                labels: {
+
+                                    usePointStyle: true,
+
+                                    padding: 18
+
+                                }
+
+                            },
+
+
+                            tooltip: {
+
+                                callbacks: {
+
+                                    title:
+                                        function(context) {
+
+                                            return (
+                                                "Assessment " +
+                                                context[0].label
+                                            );
+
+                                        },
+
+
+                                    label:
+                                        function(context) {
+
+                                            return (
+                                                context.dataset.label +
+                                                ": " +
+                                                context.parsed.y.toFixed(2) +
+                                                " A"
+                                            );
+
+                                        }
+
+                                }
+
+                            }
+
+                        },
+
+
+                        scales: {
+
+                            x: {
+
+                                title: {
+
+                                    display: true,
+
+                                    text:
+                                        "Prediction Assessment"
+
+                                }
+
+                            },
+
+
+                            y: {
+
+                                title: {
+
+                                    display: true,
+
+                                    text:
+                                        "Spindle Current (A)"
+
+                                },
+
+                                beginAtZero: false
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+        }
+
+    }
+
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const telemetryElement =
+        document.getElementById("telemetry-history-data");
+
+    const canvas =
+        document.getElementById(
+            "drivingAxleXTrendChart"
+        );
+
+    if (!telemetryElement || !canvas) {
+        console.error("Axle X chart elements not found.");
+        return;
+    }
+
+    let telemetryHistory = [];
+
+    try {
+
+        telemetryHistory =
+            JSON.parse(
+                telemetryElement.textContent
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Telemetry history JSON error:",
+            error
+        );
+
+        return;
+    }
+
+    if (!telemetryHistory.length) {
+        console.warn("No telemetry history available.");
+        return;
+    }
+
+    const labels =
+        telemetryHistory.map(
+            (record, index) => "#" + (index + 1)
+        );
+
+    const axleXL1 =
+        telemetryHistory.map(
+            record => Number(
+                record["Current - Driving axle X L1 - mean"]
+            )
+        );
+
+    const axleXL2 =
+        telemetryHistory.map(
+            record => Number(
+                record["Current - Driving axle X L2 - mean"]
+            )
+        );
+
+    const axleXL3 =
+        telemetryHistory.map(
+            record => Number(
+                record["Current - Driving axle X L3 - mean"]
+            )
+        );
+
+    new Chart(canvas, {
+
+        type: "line",
+
+        data: {
+
+            labels: labels,
+
+            datasets: [
+
+                {
+                    label: "Axle X L1",
+                    data: axleXL1,
+                    borderColor: "#38bdf8",
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    tension: 0.35,
+                    fill: false
+                },
+
+                {
+                    label: "Axle X L2",
+                    data: axleXL2,
+                    borderColor: "#a78bfa",
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    tension: 0.35,
+                    fill: false
+                },
+
+                {
+                    label: "Axle X L3",
+                    data: axleXL3,
+                    borderColor: "#22c55e",
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    tension: 0.35,
+                    fill: false
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            interaction: {
+                mode: "index",
+                intersect: false
+            },
+
+            plugins: {
+
+                legend: {
+                    display: true,
+                    position: "top",
+                    labels: {
+                        usePointStyle: true,
+                        padding: 18
+                    }
+                },
+
+                tooltip: {
+
+                    callbacks: {
+
+                        label: function(context) {
+
+                            return (
+                                context.dataset.label +
+                                ": " +
+                                context.parsed.y.toFixed(2) +
+                                " A"
+                            );
+
+                        }
+
+                    }
+
+                }
+
+            },
+
+            scales: {
+
+                x: {
+
+                    title: {
+                        display: true,
+                        text: "Prediction Assessment"
+                    }
+
+                },
+
+                y: {
+
+                    title: {
+                        display: true,
+                        text: "Driving Axle X Current (A)"
+                    },
+
+                    beginAtZero: false
+
+                }
+
+            }
+
+        }
+
+    });
+
+});
+
+</script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const gauge = document.querySelector(".gauge");
+
+    if (!gauge) {
+        console.log("RUL Gauge not found");
+        return;
+    }
+
+    const progress = gauge.querySelector(".gauge-progress");
+    const needle = gauge.querySelector(".gauge-needle");
+
+    const rul = parseFloat(
+        gauge.getAttribute("data-rul")
+    );
+
+    const health = gauge.getAttribute(
+        "data-health"
+    );
+
+    console.log("RUL =", rul);
+    console.log("HEALTH =", health);
+
+
+    /* =====================================================
+       WAITING STATE
+       ===================================================== */
+
+    if (isNaN(rul)) {
+
+        if (progress) {
+            progress.style.width = "0%";
+        }
+
+        if (needle) {
+            needle.style.transform =
+                "translateX(-50%) rotate(-90deg)";
+        }
+
+        console.log(
+            "Waiting for AI prediction"
+        );
+
+        return;
+    }
+
+
+    /* =====================================================
+       RUL RANGE
+       ===================================================== */
+
+    const maxRUL = 50;
+
+    const limitedRUL = Math.max(
+        0,
+        Math.min(
+            rul,
+            maxRUL
+        )
+    );
+
+
+    /* =====================================================
+       CALCULATE GAUGE POSITION
+       ===================================================== */
+
+    const percentage =
+        limitedRUL / maxRUL;
+
+
+    /* =====================================================
+       UPDATE PROGRESS
+       ===================================================== */
+
+    if (progress) {
+
+        progress.style.width =
+            (percentage * 100) + "%";
+    }
+
+
+    /* =====================================================
+       UPDATE NEEDLE
+       ===================================================== */
+
+    if (needle) {
+
+        const angle =
+            -90 + (percentage * 180);
+
+        needle.style.transform =
+            "translateX(-50%) rotate(" +
+            angle +
+            "deg)";
+    }
+
+
+    /* =====================================================
+       HEALTH STATE
+       ===================================================== */
+
+    gauge.classList.remove(
+        "healthy",
+        "warning",
+        "critical"
+    );
+
+
+    if (health === "HEALTHY") {
+
+        gauge.classList.add(
+            "healthy"
+        );
+
+    }
+
+    else if (health === "WARNING") {
+
+        gauge.classList.add(
+            "warning"
+        );
+
+    }
+
+    else if (health === "CRITICAL") {
+
+        gauge.classList.add(
+            "critical"
+        );
+    }
+
+
+    console.log(
+        "RUL Gauge initialized successfully"
+    );
+
+});
+
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const telemetryElement =
+        document.getElementById("telemetry-history-data");
+
+    if (!telemetryElement) {
+        console.log("Telemetry history data not found.");
+        return;
+    }
+
+    let telemetryHistory = [];
+
+    try {
+
+        telemetryHistory =
+            JSON.parse(
+                telemetryElement.textContent
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Could not load telemetry history:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (
+        !telemetryHistory ||
+        telemetryHistory.length === 0
+    ) {
+
+        console.log(
+            "No telemetry history available."
+        );
+
+        return;
+    }
+
+
+    /* =====================================================
+       LATEST TELEMETRY RECORD
+       ===================================================== */
+
+    const latest =
+        telemetryHistory[
+            telemetryHistory.length - 1
+        ];
+
+
+    /* =====================================================
+       LATEST SPINDLE CURRENT
+       ===================================================== */
+
+    const spindleValues = [
+
+        Number(
+            latest[
+                "Current - Spindle L1 - mean"
+            ]
+        ),
+
+        Number(
+            latest[
+                "Current - Spindle L2 - mean"
+            ]
+        ),
+
+        Number(
+            latest[
+                "Current - Spindle L3 - mean"
+            ]
+        )
+
+    ];
+
+
+    const latestSpindle =
+        Math.max(
+            ...spindleValues
+        );
+
+
+    /* =====================================================
+       LATEST AXLE X CURRENT
+       ===================================================== */
+
+    const axleXValues = [
+
+        Number(
+            latest[
+                "Current - Driving axle X L1 - mean"
+            ]
+        ),
+
+        Number(
+            latest[
+                "Current - Driving axle X L2 - mean"
+            ]
+        ),
+
+        Number(
+            latest[
+                "Current - Driving axle X L3 - mean"
+            ]
+        )
+
+    ];
+
+
+    const latestAxleX =
+        Math.max(
+            ...axleXValues
+        );
+
+
+    /* =====================================================
+       PEAK SPINDLE CURRENT
+       ===================================================== */
+
+    let peakSpindle = 0;
+
+
+    telemetryHistory.forEach(
+        function (record) {
+
+            const values = [
+
+                Number(
+                    record[
+                        "Current - Spindle L1 - mean"
+                    ]
+                ),
+
+                Number(
+                    record[
+                        "Current - Spindle L2 - mean"
+                    ]
+                ),
+
+                Number(
+                    record[
+                        "Current - Spindle L3 - mean"
+                    ]
+                )
+
+            ];
+
+
+            const recordPeak =
+                Math.max(...values);
+
+
+            if (
+                recordPeak > peakSpindle
+            ) {
+
+                peakSpindle =
+                    recordPeak;
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       UPDATE DASHBOARD CARDS
+       ===================================================== */
+
+    const latestSpindleElement =
+        document.getElementById(
+            "latestSpindleCurrent"
+        );
+
+
+    const latestAxleXElement =
+        document.getElementById(
+            "latestAxleXCurrent"
+        );
+
+
+    const peakSpindleElement =
+        document.getElementById(
+            "peakSpindleCurrent"
+        );
+
+
+    const assessmentElement =
+        document.getElementById(
+            "telemetryAssessmentCount"
+        );
+
+
+    if (latestSpindleElement) {
+
+        latestSpindleElement.textContent =
+            latestSpindle.toFixed(2);
+
+    }
+
+
+    if (latestAxleXElement) {
+
+        latestAxleXElement.textContent =
+            latestAxleX.toFixed(2);
+
+    }
+
+
+    if (peakSpindleElement) {
+
+        peakSpindleElement.textContent =
+            peakSpindle.toFixed(2);
+
+    }
+
+
+    if (assessmentElement) {
+
+        assessmentElement.textContent =
+            telemetryHistory.length;
+
+    }
+    /* =====================================================
+   TELEMETRY HISTORY TABLE
+   ===================================================== */
+
+const telemetryTableBody =
+    document.getElementById(
+        "telemetryHistoryTableBody"
+    );
+    telemetryTableBody.innerHTML = "";
+
+if (
+    telemetryTableBody &&
+    telemetryHistory &&
+    telemetryHistory.length > 0
+) {
+
+    telemetryHistory.forEach(
+        function (record, index) {
+
+            const spindleCurrent =
+                Math.max(
+                    Number(
+                        record[
+                            "Current - Spindle L1 - mean"
+                        ]
+                    ),
+
+                    Number(
+                        record[
+                            "Current - Spindle L2 - mean"
+                        ]
+                    ),
+
+                    Number(
+                        record[
+                            "Current - Spindle L3 - mean"
+                        ]
+                    )
+                );
+
+
+            const axleXCurrent =
+                Math.max(
+                    Number(
+                        record[
+                            "Current - Driving axle X L1 - mean"
+                        ]
+                    ),
+
+                    Number(
+                        record[
+                            "Current - Driving axle X L2 - mean"
+                        ]
+                    ),
+
+                    Number(
+                        record[
+                            "Current - Driving axle X L3 - mean"
+                        ]
+                    )
+                );
+
+
+            const axleYCurrent =
+                Math.max(
+                    Number(
+                        record[
+                            "Current - Driving axle Y L1 - mean"
+                        ]
+                    ),
+
+                    Number(
+                        record[
+                            "Current - Driving axle Y L2 - mean"
+                        ]
+                    ),
+
+                    Number(
+                        record[
+                            "Current - Driving axle Y L3 - mean"
+                        ]
+                    )
+                );
+
+
+            const row =
+                document.createElement("tr");
+
+
+           row.innerHTML = `
+    <td>#${index + 1}</td>
+    <td>${record["timestamp"] || "-"}</td>
+    <td>${Number(record["rul"] || 0).toFixed(2)}</td>
+    <td>
+    <span class="health-badge health-${String(record["health_status"] || "").toLowerCase()}">
+        ${record["health_status"] || "-"}
+    </span>
+</td>
+    <td>${spindleCurrent.toFixed(2)}</td>
+    <td>${axleXCurrent.toFixed(2)}</td>
+    <td>${axleYCurrent.toFixed(2)}</td>
+`;
+
+            telemetryTableBody.appendChild(row);
+
+        }
+    );
+
+}
+
+
+    console.log(
+        "Telemetry statistics loaded successfully."
+    );
+
+});
+
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const telemetryElement =
+        document.getElementById("telemetry-history-data");
+
+    const canvas =
+        document.getElementById(
+            "drivingAxleYTrendChart"
+        );
+
+    if (!telemetryElement || !canvas) {
+
+        console.error(
+            "Driving Axle Y chart elements not found."
+        );
+
+        return;
+    }
+
+
+    let telemetryHistory = [];
+
+    try {
+
+        telemetryHistory =
+            JSON.parse(
+                telemetryElement.textContent
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Could not load telemetry history:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (
+        !telemetryHistory ||
+        telemetryHistory.length === 0
+    ) {
+
+        console.warn(
+            "No telemetry history available."
+        );
+
+        return;
+    }
+
+
+    const labels =
+        telemetryHistory.map(
+            (record, index) =>
+                "#" + (index + 1)
+        );
+
+
+    const axleYL1 =
+        telemetryHistory.map(
+            record =>
+                Number(
+                    record[
+                        "Current - Driving axle Y L1 - mean"
+                    ]
+                )
+        );
+
+
+    const axleYL2 =
+        telemetryHistory.map(
+            record =>
+                Number(
+                    record[
+                        "Current - Driving axle Y L2 - mean"
+                    ]
+                )
+        );
+
+
+    const axleYL3 =
+        telemetryHistory.map(
+            record =>
+                Number(
+                    record[
+                        "Current - Driving axle Y L3 - mean"
+                    ]
+                )
+        );
+
+
+    new Chart(
+        canvas,
+        {
+
+            type: "line",
+
+            data: {
+
+                labels: labels,
+
+                datasets: [
+
+                    {
+                        label: "Axle Y L1",
+
+                        data: axleYL1,
+
+                        borderColor: "#38bdf8",
+
+                        borderWidth: 2,
+
+                        pointRadius: 4,
+
+                        tension: 0.35,
+
+                        fill: false
+                    },
+
+                    {
+                        label: "Axle Y L2",
+
+                        data: axleYL2,
+
+                        borderColor: "#a78bfa",
+
+                        borderWidth: 2,
+
+                        pointRadius: 4,
+
+                        tension: 0.35,
+
+                        fill: false
+                    },
+
+                    {
+                        label: "Axle Y L3",
+
+                        data: axleYL3,
+
+                        borderColor: "#22c55e",
+
+                        borderWidth: 2,
+
+                        pointRadius: 4,
+
+                        tension: 0.35,
+
+                        fill: false
+                    }
+
+                ]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                interaction: {
+
+                    mode: "index",
+
+                    intersect: false
+
+                },
+
+
+                plugins: {
+
+                    legend: {
+
+                        display: true,
+
+                        position: "top",
+
+                        labels: {
+
+                            usePointStyle: true,
+
+                            padding: 18
+
+                        }
+
+                    },
+
+
+                    tooltip: {
+
+                        callbacks: {
+
+                            label: function(context) {
+
+                                return (
+                                    context.dataset.label +
+                                    ": " +
+                                    context.parsed.y.toFixed(2) +
+                                    " A"
+                                );
+
+                            }
+
+                        }
+
+                    }
+
+                },
+
+
+                scales: {
+
+                    x: {
+
+                        title: {
+
+                            display: true,
+
+                            text:
+                                "Prediction Assessment"
+
+                        }
+
+                    },
+
+
+                    y: {
+
+                        title: {
+
+                            display: true,
+
+                            text:
+                                "Driving Axle Y Current (A)"
+
+                        },
+
+                        beginAtZero: false
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
+
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const telemetryElement =
+        document.getElementById("telemetry-history-data");
+
+    const canvas =
+        document.getElementById(
+            "drivingAxleYTrendChart"
+        );
+
+    if (!telemetryElement || !canvas) {
+
+        console.error(
+            "Driving Axle Y chart elements not found."
+        );
+
+        return;
+    }
+
+
+    let telemetryHistory = [];
+
+    try {
+
+        telemetryHistory =
+            JSON.parse(
+                telemetryElement.textContent
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Could not load telemetry history:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (
+        !telemetryHistory ||
+        telemetryHistory.length === 0
+    ) {
+
+        console.warn(
+            "No telemetry history available."
+        );
+
+        return;
+    }
+
+
+    const labels =
+        telemetryHistory.map(
+            (record, index) =>
+                "#" + (index + 1)
+        );
+
+
+    const axleYL1 =
+        telemetryHistory.map(
+            record =>
+                Number(
+                    record[
+                        "Current - Driving axle Y L1 - mean"
+                    ]
+                )
+        );
+
+
+    const axleYL2 =
+        telemetryHistory.map(
+            record =>
+                Number(
+                    record[
+                        "Current - Driving axle Y L2 - mean"
+                    ]
+                )
+        );
+
+
+    const axleYL3 =
+        telemetryHistory.map(
+            record =>
+                Number(
+                    record[
+                        "Current - Driving axle Y L3 - mean"
+                    ]
+                )
+        );
+
+
+    new Chart(
+        canvas,
+        {
+
+            type: "line",
+
+            data: {
+
+                labels: labels,
+
+                datasets: [
+
+                    {
+                        label: "Axle Y L1",
+
+                        data: axleYL1,
+
+                        borderColor: "#38bdf8",
+
+                        borderWidth: 2,
+
+                        pointRadius: 4,
+
+                        tension: 0.35,
+
+                        fill: false
+                    },
+
+                    {
+                        label: "Axle Y L2",
+
+                        data: axleYL2,
+
+                        borderColor: "#a78bfa",
+
+                        borderWidth: 2,
+
+                        pointRadius: 4,
+
+                        tension: 0.35,
+
+                        fill: false
+                    },
+
+                    {
+                        label: "Axle Y L3",
+
+                        data: axleYL3,
+
+                        borderColor: "#22c55e",
+
+                        borderWidth: 2,
+
+                        pointRadius: 4,
+
+                        tension: 0.35,
+
+                        fill: false
+                    }
+
+                ]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                interaction: {
+
+                    mode: "index",
+
+                    intersect: false
+
+                },
+
+
+                plugins: {
+
+                    legend: {
+
+                        display: true,
+
+                        position: "top",
+
+                        labels: {
+
+                            usePointStyle: true,
+
+                            padding: 18
+
+                        }
+
+                    },
+
+
+                    tooltip: {
+
+                        callbacks: {
+
+                            label: function(context) {
+
+                                return (
+                                    context.dataset.label +
+                                    ": " +
+                                    context.parsed.y.toFixed(2) +
+                                    " A"
+                                );
+
+                            }
+
+                        }
+
+                    }
+
+                },
+
+
+                scales: {
+
+                    x: {
+
+                        title: {
+
+                            display: true,
+
+                            text:
+                                "Prediction Assessment"
+
+                        }
+
+                    },
+
+
+                    y: {
+
+                        title: {
+
+                            display: true,
+
+                            text:
+                                "Driving Axle Y Current (A)"
+
+                        },
+
+                        beginAtZero: false
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    );
+
+});
+
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const telemetryElement =
+        document.getElementById("telemetry-history-data");
+
+    if (!telemetryElement) {
+        return;
+    }
+
+    let telemetryHistory = [];
+
+    try {
+
+        telemetryHistory =
+            JSON.parse(
+                telemetryElement.textContent
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Telemetry history could not be loaded:",
+            error
+        );
+
+        return;
+    }
+
+
+    if (
+        !telemetryHistory ||
+        telemetryHistory.length === 0
+    ) {
+        return;
+    }
+
+
+    /* =========================================
+       GET LATEST TELEMETRY RECORD
+       ========================================= */
+
+    const latest =
+        telemetryHistory[
+            telemetryHistory.length - 1
+        ];
+
+
+    /* =========================================
+       GET SPINDLE CURRENT
+       ========================================= */
+
+    const spindleValues = [
+
+        Number(
+            latest[
+                "Current - Spindle L1 - mean"
+            ]
+        ),
+
+        Number(
+            latest[
+                "Current - Spindle L2 - mean"
+            ]
+        ),
+
+        Number(
+            latest[
+                "Current - Spindle L3 - mean"
+            ]
+        )
+
+    ];
+
+
+    /* =========================================
+       GET AXLE X CURRENT
+       ========================================= */
+
+    const axleXValues = [
+
+        Number(
+            latest[
+                "Current - Driving axle X L1 - mean"
+            ]
+        ),
+
+        Number(
+            latest[
+                "Current - Driving axle X L2 - mean"
+            ]
+        ),
+
+        Number(
+            latest[
+                "Current - Driving axle X L3 - mean"
+            ]
+        )
+
+    ];
+
+
+    /* =========================================
+       CHECK FOR INVALID VALUES
+       ========================================= */
+
+    const allValues =
+        spindleValues.concat(
+            axleXValues
+        );
+
+
+    const validValues =
+        allValues.filter(
+            value => Number.isFinite(value)
+        );
+
+
+    if (validValues.length === 0) {
+        return;
+    }
+
+
+    /* =========================================
+       BASIC TELEMETRY CONDITION
+       ========================================= */
+
+    const latestSpindle =
+        Math.max(...spindleValues);
+
+
+    let condition = "HEALTHY";
+
+
+    if (latestSpindle > 160000) {
+
+        condition = "CRITICAL";
+
+    } else if (latestSpindle > 150000) {
+
+        condition = "WARNING";
+
+    }
+
+
+    /* =========================================
+       UPDATE CONDITION INDICATOR
+       ========================================= */
+
+    const indicator =
+        document.getElementById(
+            "machineConditionIndicator"
+        );
+
+
+    const signalStatus =
+        document.getElementById(
+            "machineSignalStatus"
+        );
+
+
+    const sampleCount =
+        document.getElementById(
+            "machineTelemetrySamples"
+        );
+
+
+    if (indicator) {
+
+        indicator.textContent =
+            condition;
+
+    }
+
+
+    if (signalStatus) {
+
+        signalStatus.textContent =
+            condition === "HEALTHY"
+                ? "NORMAL"
+                : "ATTENTION REQUIRED";
+
+    }
+
+
+    if (sampleCount) {
+
+        sampleCount.textContent =
+            telemetryHistory.length;
+
+    }
+
+
+    console.log(
+        "Overall machine condition:",
+        condition
+    );
+
+});
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,199 @@
+AI MANUFACTURING DIGITAL TWIN
+Intelligent Tool Health & Predictive Maintenance Platform
+SYSTEM ONLINE
+MACHINE STATUS
+OPERATIONAL
+CNC Milling System
+PREDICTED RUL
+{% if prediction is not none %}
+    {{ "%.2f"|format(prediction) }}
+{% else %}
+    --
+{% endif %}
+Remaining Useful Life
+HEALTH STATUS
+{% if health_status is not none %}
+    {{ health_status }}
+{% else %}
+    WAITING
+{% endif %}
+AI Model Assessment
+PREDICTIVE MAINTENANCE
+Remaining Useful Life Monitoring
+LIVE MODEL OUTPUT
+CURRENT PREDICTED RUL
+{% if prediction is defined %} {{ prediction }} {% else %} -- {% endif %} cycles
+Estimated remaining useful life of the CNC milling system based on the trained Random Forest predictive model.
+MAINTENANCE CONDITION
+{% if health_status is defined %} {% if health_status == "HEALTHY" %}
+NORMAL OPERATION
+Machine condition is currently within the healthy operating range.
+
+{% elif health_status == "WARNING" %}
+INSPECTION RECOMMENDED
+Machine degradation is indicated. Schedule preventive inspection.
+
+{% else %}
+MAINTENANCE REQUIRED
+Low predicted remaining life. Immediate maintenance is recommended.
+
+{% endif %} {% else %}
+AWAITING PREDICTION
+{% endif %}
+MACHINE TELEMETRY
+Live Machine Signal Overview
+DATASET SIGNALS
+Driving Axle X L1 — MEAN
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle X L1 - mean", 0)) }} {% else %} -- {% endif %} A
+Mean Drive Current
+Driving Axle X L2 — MEAN
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle X L2 - mean", 0)) }} {% else %} -- {% endif %} A
+Mean Drive Current
+Driving Axle X L3 — MEAN
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle X L3 - mean", 0)) }} {% else %} -- {% endif %} A
+Mean Drive Current
+Driving Axle X L1 — STD
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle X L1 - std", 0)) }} {% else %} -- {% endif %} A
+Current Variation
+Driving Axle X L2 — STD
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle X L2 - std", 0)) }} {% else %} -- {% endif %} A
+Current Variation
+Driving Axle X L3 — STD
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle X L3 - std", 0)) }} {% else %} -- {% endif %} A
+Current Variation
+Driving Axle X L1 — MAX
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle X L1 - max", 0)) }} {% else %} -- {% endif %} A
+Maximum Current
+Driving Axle X L2 — MAX
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle X L2 - max", 0)) }} {% else %} -- {% endif %} A
+Maximum Current
+Driving Axle X L3 — MAX
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle X L3 - max", 0)) }} {% else %} -- {% endif %} A
+Maximum Current
+Driving Axle X L1 — SKEW
+{% if default_values is defined %} {{ "%.3f"|format(default_values.get("Current - Driving axle X L1 - skew", 0)) }} {% else %} -- {% endif %}
+Signal Asymmetry
+Driving Axle X L3 — SKEW
+{% if default_values is defined %} {{ "%.3f"|format(default_values.get("Current - Driving axle X L3 - skew", 0)) }} {% else %} -- {% endif %}
+Signal Asymmetry
+Driving Axle Y L1 — MEAN
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle Y L1 - mean", 0)) }} {% else %} -- {% endif %} A
+Mean Drive Current
+Driving Axle Y L2 — MEAN
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle Y L2 - mean", 0)) }} {% else %} -- {% endif %} A
+Mean Drive Current
+Driving Axle Y L3 — MEAN
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle Y L3 - mean", 0)) }} {% else %} -- {% endif %} A
+Mean Drive Current
+Driving Axle Y L1 — STD
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle Y L1 - std", 0)) }} {% else %} -- {% endif %} A
+Current Variation
+Driving Axle Y L2 — STD
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle Y L2 - std", 0)) }} {% else %} -- {% endif %} A
+Current Variation
+Driving Axle Y L3 — STD
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Driving axle Y L3 - std", 0)) }} {% else %} -- {% endif %} A
+Current Variation
+Spindle L1 — MEAN
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Spindle L1 - mean", 0)) }} {% else %} -- {% endif %} A
+Mean Spindle Current
+Spindle L2 — MEAN
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Spindle L2 - mean", 0)) }} {% else %} -- {% endif %} A
+Mean Spindle Current
+Spindle L3 — MEAN
+{% if default_values is defined %} {{ "%.2f"|format(default_values.get("Current - Spindle L3 - mean", 0)) }} {% else %} -- {% endif %} A
+Mean Spindle Current
+Tool Health Monitoring
+Enter the current machine signal features below to estimate the remaining useful life of the cutting tool using the trained machine learning model.
+
+01
+Driving Axle X
+SIGNAL INPUT
+Driving Axle X L1 — Mean 
+Driving Axle X L2 — Mean 
+Driving Axle X L3 — Mean 
+Driving Axle X L1 — Standard Deviation 
+Driving Axle X L2 — Standard Deviation 
+Driving Axle X L3 — Standard Deviation 
+Driving Axle X L1 — Maximum 
+Driving Axle X L2 — Maximum 
+Driving Axle X L3 — Maximum 
+Driving Axle X L1 — Skewness 
+Driving Axle X L3 — Skewness 
+02
+Driving Axle Y
+SIGNAL INPUT
+Driving Axle Y L1 — Mean 
+Driving Axle Y L2 — Mean 
+Driving Axle Y L3 — Mean 
+Driving Axle Y L1 — Standard Deviation 
+Driving Axle Y L2 — Standard Deviation 
+Driving Axle Y L3 — Standard Deviation 
+03
+Spindle
+SIGNAL INPUT
+Spindle L1 — Mean 
+Spindle L2 — Mean 
+Spindle L3 — Mean 
+AI Tool Health Analysis
+Submit the current sensor measurements to calculate the tool's estimated remaining useful life.
+
+RUN AI PREDICTION
+{% if prediction is defined %}
+AI PREDICTION RESULT
+Tool Health Assessment
+REMAINING USEFUL LIFE {{ prediction }} Estimated tool life
+MACHINE HEALTH {{ health_status }} AI-based health assessment
+{% endif %}
+AI Manufacturing Digital Twin • Predictive Maintenance System
+MACHINE INTELLIGENCE
+RUL Health Gauge
+Real-time remaining useful life assessment generated by the trained Random Forest predictive model.
+
+MODEL ACTIVE
+REMAINING USEFUL LIFE
+{% if prediction is not none %} {{ "%.2f"|format(prediction) }} {% else %} -- {% endif %}
+CYCLES
+0 10 20 30 40 50+
+ESTIMATED REMAINING MACHINE LIFE
+CURRENT MACHINE CONDITION
+{% if health_status %} {% if health_status == "HEALTHY" %}
+HEALTHY
+NORMAL OPERATING CONDITION
+The predicted remaining useful life is within the healthy operating range. Continue normal machine operation and monitoring.
+
+{% elif health_status == "WARNING" %}
+WARNING
+PREVENTIVE INSPECTION RECOMMENDED
+The AI model indicates measurable machine degradation. Preventive inspection should be planned before continued high-load operation.
+
+{% else %}
+CRITICAL
+MAINTENANCE REQUIRED
+The predicted remaining useful life is low. Immediate maintenance inspection is recommended.
+
+{% endif %} {% else %}
+WAITING
+AWAITING AI PREDICTION
+Run the AI prediction using the current machine signal measurements to calculate remaining useful life.
+
+{% endif %}
+CRITICAL
+WARNING
+HEALTHY
+PREDICTIVE ANALYTICS
+RUL Prediction History
+Historical remaining useful life predictions generated by the AI model.
+
+REAL MODEL DATA
+{% if rul_history and rul_history|length > 0 %}
+{% for record in rul_history|reverse %}
+ASSESSMENT	TIMESTAMP	RUL	HEALTH
+#{{ record.assessment }}	{{ record.timestamp }}	{{ "%.2f"|format(record.rul) }} CYCLES	{{ record.health_status }}
+{% endfor %}
+{% else %}
+—
+No Prediction History
+Run an AI prediction to begin recording machine RUL assessments.
+
+{% endif %}

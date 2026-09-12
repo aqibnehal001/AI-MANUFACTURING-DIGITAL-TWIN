@@ -1,0 +1,2742 @@
+/* =========================================================
+   AI MANUFACTURING DIGITAL TWIN
+   PROFESSIONAL INDUSTRIAL DASHBOARD
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-main: #07111f;
+    --bg-panel: #0d1929;
+    --bg-card: #111f32;
+    --bg-input: #091525;
+
+    --border: #1e334b;
+
+    --primary: #22d3ee;
+    --primary-dark: #0891b2;
+
+    --text-main: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+}
+
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+body {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(8, 145, 178, 0.08),
+            transparent 30%
+        ),
+        var(--bg-main);
+
+    color: var(--text-main);
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    padding: 0;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   DASHBOARD HEADER
+   ========================================================= */
+
+.dashboard-header {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 24px 45px;
+
+    background: rgba(7, 17, 31, 0.95);
+
+    border-bottom: 1px solid var(--border);
+
+    position: sticky;
+    top: 0;
+
+    z-index: 10;
+
+    backdrop-filter: blur(12px);
+}
+
+
+.brand-title {
+    font-size: 22px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: var(--text-main);
+}
+
+
+.brand-subtitle {
+    margin-top: 4px;
+
+    font-size: 13px;
+
+    color: var(--text-secondary);
+}
+
+
+.system-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 14px;
+
+    border: 1px solid rgba(34, 197, 94, 0.25);
+
+    border-radius: 20px;
+
+    background: rgba(34, 197, 94, 0.06);
+
+    color: #86efac;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.7px;
+}
+
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: var(--success);
+
+    box-shadow:
+        0 0 8px rgba(34, 197, 94, 0.8);
+}
+
+
+/* =========================================================
+   OVERVIEW CARDS
+   ========================================================= */
+
+.overview-grid {
+    max-width: 1350px;
+
+    margin: 30px auto 0;
+
+    padding: 0 30px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+
+.dashboard-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 31, 50, 0.95),
+            rgba(13, 25, 41, 0.95)
+        );
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 23px;
+
+    min-height: 145px;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.18);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #2b4865;
+}
+
+
+.card-label {
+    color: var(--text-muted);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+.card-value {
+    margin-top: 13px;
+
+    font-size: 27px;
+
+    font-weight: 700;
+
+    color: var(--primary);
+
+    word-break: break-word;
+}
+
+
+.card-description {
+    margin-top: 5px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.dashboard-container {
+    max-width: 1350px;
+
+    margin: 0 auto;
+
+    padding: 35px 30px 60px;
+}
+
+
+/* =========================================================
+   INTRODUCTION
+   ========================================================= */
+
+.page-introduction {
+    margin-bottom: 25px;
+}
+
+
+.page-introduction h1 {
+    font-size: 29px;
+
+    font-weight: 700;
+
+    color: var(--text-main);
+
+    margin-bottom: 8px;
+}
+
+
+.page-introduction p {
+    max-width: 850px;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   PREDICTION FORM
+   ========================================================= */
+
+.prediction-form {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13, 25, 41, 0.98),
+            rgba(9, 21, 37, 0.98)
+        );
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   SENSOR SECTION
+   ========================================================= */
+
+.sensor-section {
+    padding: 30px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.section-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+
+.section-header > div {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.section-number {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 8px;
+
+    background: rgba(34, 211, 238, 0.08);
+
+    border: 1px solid rgba(34, 211, 238, 0.2);
+
+    color: var(--primary);
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.section-header h2 {
+    margin: 0;
+
+    color: var(--text-main);
+
+    font-size: 19px;
+
+    font-weight: 600;
+}
+
+
+.sensor-status {
+    color: var(--text-muted);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    padding: 6px 10px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 5px;
+}
+
+
+/* =========================================================
+   INPUT GRID
+   ========================================================= */
+
+.input-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+
+.spindle-grid {
+    grid-template-columns:
+        repeat(3, 1fr);
+}
+
+
+/* =========================================================
+   INPUT GROUP
+   ========================================================= */
+
+.input-group {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.input-group label {
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    margin-bottom: 8px;
+}
+
+
+.input-group input {
+    width: 100%;
+
+    height: 43px;
+
+    padding: 0 13px;
+
+    border-radius: 8px;
+
+    border: 1px solid #263b53;
+
+    background: var(--bg-input);
+
+    color: var(--text-main);
+
+    font-size: 13px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.input-group input:hover {
+    border-color: #36516e;
+}
+
+
+.input-group input:focus {
+    border-color: var(--primary);
+
+    background: #0b1a2d;
+
+    box-shadow:
+        0 0 0 3px rgba(34, 211, 238, 0.08);
+}
+
+
+/* Remove number spinner */
+
+.input-group input::-webkit-outer-spin-button,
+.input-group input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+
+    margin: 0;
+}
+
+
+.input-group input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* =========================================================
+   PREDICTION ACTION
+   ========================================================= */
+
+.prediction-action {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    padding: 28px 30px;
+
+    background:
+        rgba(34, 211, 238, 0.025);
+}
+
+
+.prediction-action h2 {
+    margin: 0 0 5px;
+
+    font-size: 17px;
+
+    color: var(--text-main);
+}
+
+
+.prediction-action p {
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   PREDICTION BUTTON
+   ========================================================= */
+
+.predict-button {
+    flex-shrink: 0;
+
+    min-width: 210px;
+
+    height: 48px;
+
+    padding: 0 25px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0891b2,
+            #0284c7
+        );
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.7px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 25px rgba(2, 132, 199, 0.18);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+
+.predict-button:hover {
+    transform: translateY(-2px);
+
+    filter: brightness(1.08);
+
+    box-shadow:
+        0 12px 30px rgba(2, 132, 199, 0.3);
+}
+
+
+.predict-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   RESULT SECTION
+   ========================================================= */
+
+.result-section {
+    margin-top: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13, 25, 41, 0.98),
+            rgba(9, 21, 37, 0.98)
+        );
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 28px;
+
+    box-shadow:
+        0 18px 50px rgba(0, 0, 0, 0.2);
+}
+
+
+.result-header {
+    margin-bottom: 22px;
+}
+
+
+.result-label {
+    color: var(--primary);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+}
+
+
+.result-header h2 {
+    margin-top: 5px;
+
+    color: var(--text-main);
+
+    font-size: 21px;
+}
+
+
+/* =========================================================
+   RESULT CARDS
+   ========================================================= */
+
+.result-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+
+.result-card {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    min-height: 145px;
+
+    padding: 24px;
+
+    background: var(--bg-card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+}
+
+
+.result-card-label {
+    color: var(--text-muted);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+.result-card strong {
+    margin-top: 10px;
+
+    font-size: 30px;
+
+    color: var(--primary);
+
+    word-break: break-word;
+}
+
+
+.result-card span:last-child {
+    margin-top: 4px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+    text-align: center;
+
+    padding: 22px 20px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--text-muted);
+
+    font-size: 11px;
+
+    letter-spacing: 0.4px;
+}
+
+
+footer span {
+    margin: 0 6px;
+
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .input-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .overview-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .dashboard-header {
+        padding: 20px;
+
+        align-items: flex-start;
+
+        gap: 15px;
+
+        flex-direction: column;
+    }
+
+
+    .brand-title {
+        font-size: 18px;
+    }
+
+
+    .overview-grid {
+        padding: 0 20px;
+    }
+
+
+    .dashboard-container {
+        padding:
+            28px 20px 45px;
+    }
+
+
+    .input-grid,
+    .spindle-grid,
+    .result-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .sensor-section {
+        padding: 22px;
+    }
+
+
+    .section-header {
+        align-items: flex-start;
+
+        gap: 12px;
+
+        flex-direction: column;
+    }
+
+
+    .prediction-action {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+
+    .predict-button {
+        width: 100%;
+    }
+
+
+    .page-introduction h1 {
+        font-size: 24px;
+    }
+
+}
+
+/* =========================================================
+   RUL MONITORING PANEL
+   ========================================================= */
+
+.rul-monitoring {
+    margin-top: 28px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-label {
+    color: #26d9ff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+}
+
+.section-heading h2 {
+    margin: 0;
+    color: #f4f8ff;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.live-indicator {
+    color: #8ea8c7;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.live-indicator span {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: #25e0a0;
+    border-radius: 50%;
+    margin-right: 7px;
+    box-shadow: 0 0 10px rgba(37, 224, 160, 0.7);
+}
+
+.rul-panel {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 20px;
+    padding: 26px;
+    background: linear-gradient(135deg, #0d1b2e, #101f34);
+    border: 1px solid #203b5b;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.rul-main {
+    padding-right: 20px;
+    border-right: 1px solid #203b5b;
+}
+
+.rul-title,
+.status-heading {
+    color: #7f9abb;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    margin-bottom: 10px;
+}
+
+.rul-number {
+    color: #25d9ff;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.rul-number span {
+    color: #8ea8c7;
+    font-size: 16px;
+    font-weight: 500;
+    margin-left: 5px;
+}
+
+.rul-description {
+    max-width: 650px;
+    margin-top: 12px;
+    color: #91a9c4;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.rul-status {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.maintenance-message {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.rul-status p {
+    color: #91a9c4;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.healthy-message {
+    color: #25e0a0;
+}
+
+.warning-message {
+    color: #ffc857;
+}
+
+.critical-message {
+    color: #ff5c6c;
+}
+
+/* Responsive layout */
+
+@media (max-width: 800px) {
+
+    .rul-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .rul-main {
+        padding-right: 0;
+        padding-bottom: 20px;
+        border-right: none;
+        border-bottom: 1px solid #203b5b;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        gap: 10px;
+        flex-direction: column;
+    }
+}
+/* =========================================================
+   MACHINE HEALTH ASSESSMENT
+   ========================================================= */
+
+.health-assessment {
+    max-width: 1480px;
+    margin: 70px auto;
+    padding: 0 32px;
+}
+
+.health-assessment .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+}
+
+.health-assessment .section-tag {
+    color: #16d9ff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.health-assessment h2 {
+    margin: 8px 0;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.health-assessment .section-header p {
+    margin: 0;
+    color: #86a4c9;
+    font-size: 15px;
+}
+
+.health-indicator {
+    border: 1px solid rgba(36, 224, 171, 0.3);
+    border-radius: 30px;
+    padding: 10px 18px;
+    color: #9fc0df;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.health-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: #20dfaa;
+    box-shadow: 0 0 12px rgba(32, 223, 170, 0.8);
+}
+
+.health-panel {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 0;
+    background: #0d1b2e;
+    border: 1px solid #203c5c;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.health-main,
+.health-score,
+.maintenance-action {
+    padding: 34px;
+}
+
+.health-score,
+.maintenance-action {
+    border-left: 1px solid #203c5c;
+}
+
+.health-label,
+.score-label,
+.action-label {
+    color: #7698c1;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+}
+
+.health-status-large {
+    font-size: 38px;
+    font-weight: 800;
+    color: #ffbd45;
+    margin-bottom: 12px;
+}
+
+.health-description {
+    color: #89a7cb;
+    line-height: 1.7;
+    font-size: 14px;
+    max-width: 520px;
+}
+
+.score-value {
+    font-size: 42px;
+    font-weight: 800;
+    color: #18d5ff;
+    margin-bottom: 22px;
+}
+
+.score-value span {
+    font-size: 16px;
+    color: #8aa7c8;
+    font-weight: 500;
+}
+
+.health-bar {
+    width: 100%;
+    height: 10px;
+    background: #162b43;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.health-bar-fill {
+    width: 53%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #ff5964,
+        #ffbd45,
+        #20dfaa
+    );
+    border-radius: 20px;
+}
+
+.health-scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    color: #6684a7;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.action-title {
+    color: #ffbd45;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.maintenance-action p {
+    color: #89a7cb;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+
+    .health-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .health-score,
+    .maintenance-action {
+        border-left: none;
+        border-top: 1px solid #203c5c;
+    }
+
+    .health-assessment .section-header {
+        align-items: flex-start;
+        gap: 20px;
+        flex-direction: column;
+    }
+}
+/* =========================================================
+   LIVE MACHINE TELEMETRY
+   ========================================================= */
+
+.telemetry-section {
+    max-width: 1480px;
+    margin: 40px auto;
+    padding: 0 32px;
+}
+
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.telemetry-card {
+    background: #0d1b2e;
+    border: 1px solid #203c5c;
+    border-radius: 14px;
+    padding: 24px;
+    transition: transform 0.2s ease;
+}
+
+.telemetry-card:hover {
+    transform: translateY(-3px);
+}
+
+.telemetry-label {
+    color: #7797b9;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    margin-bottom: 14px;
+}
+
+.telemetry-value {
+    color: #19d7ff;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.telemetry-value span {
+    color: #7d9bb9;
+    font-size: 13px;
+    margin-left: 5px;
+}
+
+.telemetry-description {
+    color: #627f9f;
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+    .telemetry-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .telemetry-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .telemetry-section {
+        padding: 0 16px;
+    }
+}
+/* =========================================================
+   RUL HEALTH GAUGE
+   ========================================================= */
+
+.gauge-panel {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d1b2e,
+            #101f34
+        );
+
+    border: 1px solid #203c5c;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.20);
+}
+
+
+/* =========================================================
+   GAUGE CONTAINER
+   ========================================================= */
+
+.gauge-container {
+    padding: 38px 42px;
+
+    border-right: 1px solid #203c5c;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+
+.gauge-title {
+    width: 100%;
+
+    color: #7698c1;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 12px;
+}
+
+
+/* =========================================================
+   GAUGE
+   ========================================================= */
+
+.gauge {
+    position: relative;
+
+    width: 330px;
+
+    height: 165px;
+
+    margin-top: 10px;
+
+    overflow: hidden;
+}
+
+
+/* Background arc */
+
+.gauge-track,
+.gauge-progress {
+    position: absolute;
+
+    width: 300px;
+
+    height: 300px;
+
+    left: 15px;
+
+    top: 10px;
+
+    border-radius: 50%;
+
+    border: 26px solid transparent;
+
+    transform: rotate(225deg);
+}
+
+
+/* Full gauge background */
+
+.gauge-track {
+    border-top-color: #ef4444;
+    border-right-color: #f59e0b;
+    border-bottom-color: #22c55e;
+}
+
+
+/* Active progress overlay */
+
+.gauge-progress {
+    border-top-color: rgba(255, 255, 255, 0.15);
+    border-right-color: rgba(255, 255, 255, 0.15);
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+
+    opacity: 0.55;
+}
+
+
+/* =========================================================
+   GAUGE CENTER
+   ========================================================= */
+
+.gauge-center {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 2px;
+
+    transform: translateX(-50%);
+
+    text-align: center;
+
+    z-index: 2;
+
+    width: 180px;
+}
+
+
+.gauge-value {
+    color: #19d7ff;
+
+    font-size: 46px;
+
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+.gauge-unit {
+    margin-top: 7px;
+
+    color: #7d9bb9;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+}
+
+
+/* =========================================================
+   GAUGE SCALE
+   ========================================================= */
+
+.gauge-scale {
+    width: 310px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: -2px;
+
+    color: #6684a7;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+.gauge-caption {
+    margin-top: 18px;
+
+    color: #627f9f;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+}
+
+
+/* =========================================================
+   GAUGE STATUS
+   ========================================================= */
+
+.gauge-status {
+    padding: 38px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+
+.status-label {
+    color: #7698c1;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 14px;
+}
+
+
+.gauge-health {
+    font-size: 40px;
+
+    font-weight: 800;
+
+    line-height: 1.1;
+
+    margin-bottom: 14px;
+}
+
+
+.gauge-health.healthy {
+    color: #22c55e;
+}
+
+
+.gauge-health.warning {
+    color: #f59e0b;
+}
+
+
+.gauge-health.critical {
+    color: #ef4444;
+}
+
+
+.gauge-health.waiting {
+    color: #19d7ff;
+}
+
+
+/* =========================================================
+   STATUS INDICATOR
+   ========================================================= */
+
+.health-indicator-line {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+
+    margin-bottom: 16px;
+}
+
+
+.health-indicator-line span {
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+    display: inline-block;
+}
+
+
+.healthy-line {
+    color: #86efac;
+}
+
+
+.healthy-line span {
+    background: #22c55e;
+
+    box-shadow:
+        0 0 9px rgba(34, 197, 94, 0.8);
+}
+
+
+.warning-line {
+    color: #fcd34d;
+}
+
+
+.warning-line span {
+    background: #f59e0b;
+
+    box-shadow:
+        0 0 9px rgba(245, 158, 11, 0.8);
+}
+
+
+.critical-line {
+    color: #fca5a5;
+}
+
+
+.critical-line span {
+    background: #ef4444;
+
+    box-shadow:
+        0 0 9px rgba(239, 68, 68, 0.8);
+}
+
+
+.gauge-status > p {
+    max-width: 480px;
+
+    color: #89a7cb;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   GAUGE LEGEND
+   ========================================================= */
+
+.gauge-legend {
+    display: flex;
+
+    gap: 20px;
+
+    margin-top: 28px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #203c5c;
+
+    width: 100%;
+}
+
+
+.legend-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #7896b6;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.6px;
+}
+
+
+.legend-dot {
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+    display: inline-block;
+}
+
+
+.critical-dot {
+    background: #ef4444;
+}
+
+
+.warning-dot {
+    background: #f59e0b;
+}
+
+
+.healthy-dot {
+    background: #22c55e;
+}
+
+
+/* =========================================================
+   GAUGE RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .gauge-panel {
+        grid-template-columns: 1fr;
+    }
+
+
+    .gauge-container {
+        border-right: none;
+
+        border-bottom: 1px solid #203c5c;
+    }
+
+
+    .gauge-status {
+        padding: 32px;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .gauge-container {
+        padding: 28px 18px;
+    }
+
+
+    .gauge {
+        transform: scale(0.85);
+
+        margin-top: -4px;
+
+        margin-bottom: -15px;
+    }
+
+
+    .gauge-scale {
+        width: 280px;
+    }
+
+
+    .gauge-health {
+        font-size: 32px;
+    }
+
+
+    .gauge-status {
+        padding: 25px;
+    }
+
+
+    .gauge-legend {
+        flex-wrap: wrap;
+
+        gap: 12px;
+    }
+
+}
+/* =========================================================
+   DYNAMIC RUL GAUGE NEEDLE
+   ========================================================= */
+
+.gauge-needle {
+    position: absolute;
+
+    left: 50%;
+    bottom: 10px;
+
+    width: 4px;
+    height: 135px;
+
+    transform-origin: 50% 100%;
+
+    transform:
+        translateX(-50%)
+        rotate(-90deg);
+
+    transition:
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+
+    z-index: 5;
+}
+
+
+.needle {
+    position: absolute;
+
+    bottom: 0;
+    left: 50%;
+
+    width: 4px;
+    height: 125px;
+
+    transform: translateX(-50%);
+
+    background: #f1f5f9;
+
+    border-radius: 5px;
+
+    box-shadow:
+        0 0 10px rgba(241, 245, 249, 0.45);
+}
+
+
+.needle-center {
+    position: absolute;
+
+    left: 50%;
+    bottom: -7px;
+
+    width: 18px;
+    height: 18px;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: #0d1b2e;
+
+    border: 4px solid #f1f5f9;
+
+    box-shadow:
+        0 0 12px rgba(25, 215, 255, 0.5);
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   NEEDLE HEALTH COLORS
+   ========================================================= */
+
+.gauge[data-health="HEALTHY"] .needle {
+    background: #22c55e;
+
+    box-shadow:
+        0 0 12px rgba(34, 197, 94, 0.7);
+}
+
+.gauge[data-health="HEALTHY"] .needle-center {
+    border-color: #22c55e;
+}
+
+
+.gauge[data-health="WARNING"] .needle {
+    background: #f59e0b;
+
+    box-shadow:
+        0 0 12px rgba(245, 158, 11, 0.7);
+}
+
+.gauge[data-health="WARNING"] .needle-center {
+    border-color: #f59e0b;
+}
+
+
+.gauge[data-health="CRITICAL"] .needle {
+    background: #ef4444;
+
+    box-shadow:
+        0 0 12px rgba(239, 68, 68, 0.7);
+}
+
+.gauge[data-health="CRITICAL"] .needle-center {
+    border-color: #ef4444;
+}
+/* =========================================================
+   RUL PREDICTION HISTORY
+   ========================================================= */
+
+.rul-history-section {
+    margin-top: 34px;
+}
+
+.rul-history-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.history-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 16px;
+    border: 1px solid #214b61;
+    border-radius: 20px;
+    color: #75a4c9;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.history-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #19d7ff;
+    box-shadow: 0 0 10px rgba(25, 215, 255, 0.7);
+}
+
+.history-panel {
+    background: linear-gradient(
+        135deg,
+        #0d1b2e,
+        #101f34
+    );
+
+    border: 1px solid #203c5c;
+    border-radius: 18px;
+    padding: 30px;
+    overflow: hidden;
+}
+
+.chart-container {
+    position: relative;
+    height: 320px;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.history-table-container {
+    overflow-x: auto;
+    border-top: 1px solid #203c5c;
+    padding-top: 20px;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.history-table th {
+    text-align: left;
+    color: #6383a6;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 12px;
+    border-bottom: 1px solid #203c5c;
+}
+
+.history-table td {
+    padding: 14px 12px;
+    color: #9bb6d2;
+    border-bottom: 1px solid rgba(32, 60, 92, 0.55);
+}
+
+.history-rul {
+    color: #19d7ff !important;
+    font-weight: 800;
+}
+
+.history-rul span {
+    color: #6684a7;
+    font-size: 9px;
+    margin-left: 3px;
+}
+
+.history-health {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+}
+
+.history-health.healthy {
+    color: #86efac;
+    background: rgba(34, 197, 94, 0.12);
+}
+
+.history-health.warning {
+    color: #fcd34d;
+    background: rgba(245, 158, 11, 0.12);
+}
+
+.history-health.critical {
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.12);
+}
+
+.history-empty {
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 42px;
+    color: #19d7ff;
+    margin-bottom: 10px;
+}
+
+.history-empty h3 {
+    color: #d9e7f5;
+    margin-bottom: 8px;
+}
+
+.history-empty p {
+    color: #6f8dab;
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+
+    .history-panel {
+        padding: 18px;
+    }
+
+    .chart-container {
+        height: 260px;
+    }
+
+    .rul-history-section .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+/* ============================================================
+   RUL ANALYTICS SUMMARY
+   ============================================================ */
+
+.rul-summary-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 28px;
+}
+
+
+.rul-summary-card {
+
+    padding: 22px;
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.rul-summary-card:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(255, 255, 255, 0.18);
+}
+
+
+.summary-label {
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    opacity: 0.55;
+
+    margin-bottom: 12px;
+}
+
+
+.summary-value {
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+.summary-value span {
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    opacity: 0.55;
+
+    margin-left: 4px;
+}
+
+
+.summary-description {
+
+    margin-top: 12px;
+
+    font-size: 12px;
+
+    opacity: 0.55;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .rul-summary-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .rul-summary-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+/* =========================================================
+   MACHINE HEALTH ANALYTICS
+   ========================================================= */
+
+.health-analytics-section {
+    width: 100%;
+    margin-top: 70px;
+    padding-bottom: 70px;
+}
+
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 22px;
+
+    margin-top: 30px;
+}
+
+
+.analytics-card {
+    background: rgba(15, 31, 51, 0.85);
+
+    border: 1px solid
+        rgba(75, 140, 190, 0.28);
+
+    border-radius: 18px;
+
+    padding: 28px;
+
+    min-height: 150px;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.analytics-card:hover {
+    transform: translateY(-3px);
+
+    border-color:
+        rgba(34, 211, 238, 0.55);
+}
+
+
+.analytics-card-label {
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    color: #8ea6c4;
+
+    margin-bottom: 18px;
+}
+
+
+.analytics-card-value {
+    font-size: 27px;
+
+    font-weight: 800;
+
+    color: #22d3ee;
+
+    margin-bottom: 12px;
+}
+
+
+.analytics-unit {
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: #8ea6c4;
+
+    margin-left: 5px;
+}
+
+
+.analytics-card-description {
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #8ea0b8;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .analytics-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* =========================================================
+   MACHINE HEALTH ANALYTICS
+   ========================================================= */
+
+.health-analytics-section {
+    width: 100%;
+    margin-top: 70px;
+    padding-bottom: 70px;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 30px;
+}
+
+.analytics-card {
+    background: rgba(15, 31, 51, 0.85);
+    border: 1px solid rgba(75, 140, 190, 0.28);
+    border-radius: 18px;
+    padding: 28px;
+    min-height: 150px;
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.analytics-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(34, 211, 238, 0.55);
+}
+
+.analytics-card-label {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #8ea6c4;
+    margin-bottom: 18px;
+}
+
+.analytics-card-value {
+    font-size: 27px;
+    font-weight: 800;
+    color: #22d3ee;
+    margin-bottom: 12px;
+}
+
+.analytics-unit {
+    font-size: 12px;
+    font-weight: 700;
+    color: #8ea6c4;
+    margin-left: 5px;
+}
+
+.analytics-card-description {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #8ea0b8;
+}
+
+@media (max-width: 1100px) {
+
+    .analytics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* =========================================================
+   MAINTENANCE RECOMMENDATION
+   ========================================================= */
+
+.maintenance-recommendation-section {
+    margin-top: 40px;
+}
+
+
+.recommendation-card {
+    margin-top: 24px;
+    padding: 30px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 16px;
+    background: rgba(15, 23, 42, 0.65);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+
+.recommendation-status {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+
+.recommendation-status.healthy {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+
+.recommendation-status.warning {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+
+.recommendation-status.critical {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+
+.recommendation-card p {
+    margin-top: 18px;
+    margin-bottom: 0;
+    max-width: 850px;
+    line-height: 1.7;
+    color: #94a3b8;
+    font-size: 15px;
+}
+/* =========================================================
+   RECOMMENDED ACTION
+   ========================================================= */
+
+.recommended-action {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+
+.recommended-action-label {
+    margin-bottom: 10px;
+    color: #38bdf8;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+
+.recommended-action-text {
+    color: #cbd5e1;
+    font-size: 16px;
+    line-height: 1.7;
+}
+/* =========================================================
+   RUL HISTORY STATISTICS
+   ========================================================= */
+
+.rul-statistics-section {
+    margin-top: 40px;
+}
+
+
+.rul-statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 24px;
+}
+
+
+.rul-stat-card {
+    padding: 24px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 14px;
+    background: rgba(15, 23, 42, 0.65);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+
+.rul-stat-label {
+    margin-bottom: 12px;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+
+.rul-stat-value {
+    color: #f8fafc;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+
+.rul-stat-value span {
+    margin-left: 5px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .rul-statistics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .rul-statistics-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* =========================================================
+   RUL PREDICTION CHART
+   ========================================================= */
+
+.rul-chart-section {
+    margin: 70px 0;
+}
+
+.rul-chart-section .chart-container {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    padding: 25px;
+    background: #0f1d30;
+    border: 1px solid #24415f;
+    border-radius: 18px;
+    box-sizing: border-box;
+}
+
+.rul-chart-section canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+/* =========================================================
+   TELEMETRY HISTORY STATISTICS
+   ========================================================= */
+
+.telemetry-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin: 28px 0 34px;
+}
+
+
+.telemetry-stat-card {
+    background: #0d1728;
+    border: 1px solid #22324a;
+    border-radius: 16px;
+    padding: 28px 30px;
+    min-height: 120px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease,
+                transform 0.2s ease;
+}
+
+
+.telemetry-stat-card:hover {
+    border-color: #2b587a;
+    transform: translateY(-2px);
+}
+
+
+.telemetry-stat-label {
+    color: #8da4c2;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    margin-bottom: 18px;
+}
+
+
+.telemetry-stat-value {
+    color: #f4f7fb;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+
+.telemetry-unit {
+    color: #6f8aaa;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    margin-left: 6px;
+}
+
+
+/* =========================================================
+   TELEMETRY CHART CARDS
+   ========================================================= */
+
+.condition-chart-card {
+    background: #0d1728;
+    border: 1px solid #22324a;
+    border-radius: 16px;
+    padding: 28px 30px;
+    margin-bottom: 24px;
+    box-sizing: border-box;
+}
+
+
+.condition-chart-container {
+    position: relative;
+    width: 100%;
+    height: 320px;
+}
+
+
+.analytics-card-label {
+    color: #8da4c2;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 22px;
+}
+
+
+/* =========================================================
+   RESPONSIVE TELEMETRY CARDS
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .telemetry-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .telemetry-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .telemetry-stat-value {
+        font-size: 28px;
+    }
+
+}
+/* =========================================================
+   OVERALL MACHINE CONDITION
+   ========================================================= */
+
+.machine-condition-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+
+    background: #0d1728;
+    border: 1px solid #22324a;
+    border-radius: 16px;
+
+    padding: 28px 30px;
+    margin: 0 0 34px;
+
+    box-sizing: border-box;
+}
+
+
+.machine-condition-info {
+    flex: 1;
+}
+
+
+.machine-condition-status {
+    margin-top: 10px;
+}
+
+
+.condition-indicator {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 8px 16px;
+
+    border-radius: 999px;
+
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+
+    color: #4ade80;
+
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+
+.machine-condition-description {
+    margin: 14px 0 0;
+
+    color: #7187a5;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+.machine-condition-summary {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+
+.condition-summary-item {
+    min-width: 130px;
+}
+
+
+.summary-label {
+    display: block;
+
+    color: #7187a5;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    margin-bottom: 8px;
+}
+
+
+.summary-value {
+    display: block;
+
+    color: #f4f7fb;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .machine-condition-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .machine-condition-summary {
+        width: 100%;
+        gap: 30px;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .machine-condition-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+}
+/* =====================================================
+   TELEMETRY HISTORY TABLE - PROFESSIONAL STYLE
+   ===================================================== */
+
+.telemetry-table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.telemetry-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.telemetry-history-table th {
+    padding: 15px 18px;
+    text-align: left;
+    color: #8da4c2;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    border-bottom: 1px solid #26364d;
+    white-space: nowrap;
+}
+
+.telemetry-history-table td {
+    padding: 14px 18px;
+    color: #e5edf8;
+    font-size: 13px;
+    border-bottom: 1px solid #1d2b40;
+}
+
+.telemetry-history-table th:first-child,
+.telemetry-history-table td:first-child {
+    width: 15%;
+}
+
+.telemetry-history-table th:not(:first-child),
+.telemetry-history-table td:not(:first-child) {
+    width: 28.33%;
+}
+
+.telemetry-history-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+
+    /* ============================================================
+   TELEMETRY HEALTH BADGES
+   ============================================================ */
+
+.health-badge {
+
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+
+}
+
+.health-healthy {
+
+    color: #63e6be;
+
+    background: rgba(46, 204, 113, 0.12);
+
+    border: 1px solid rgba(46, 204, 113, 0.25);
+
+}
+
+.health-warning {
+
+    color: #ffd166;
+
+    background: rgba(255, 193, 7, 0.12);
+
+    border: 1px solid rgba(255, 193, 7, 0.25);
+
+}
+
+.health-critical {
+
+    color: #ff6b6b;
+
+    background: rgba(255, 82, 82, 0.12);
+
+    border: 1px solid rgba(255, 82, 82, 0.25);
+
+}
+}
