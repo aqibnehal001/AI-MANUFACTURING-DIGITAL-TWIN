@@ -1,0 +1,41 @@
+Feature,TargetCorrelation
+Current___Driving_axle_X_L2___mean_RollingMean,0.6811064210046403
+Current - Driving axle X L2 - mean,0.6443538549537594
+Current___Driving_axle_X_L2___max_RollingMean,0.6093103605047282
+Current___Driving_axle_Y_L1___mean_RollingMean,0.5794585808361065
+Current - Driving axle X L1 - std,0.5672042271784915
+Current___Driving_axle_X_L1___skew_RollingMean,0.5583244107308413
+Current___Spindle_L3___mean_RollingMean,0.5476195481780805
+Current - Driving axle X L1 - max,0.5336772878238463
+Current___Driving_axle_X_L2___mean_BaselineDeviation,0.5317277098835049
+Current___Driving_axle_Y_L2___mean_RollingSTD,0.5263391661706898
+Current___Driving_axle_Y_L2___std_RollingSTD,0.50747518749116
+Current - Spindle L3 - mean,0.5065456567843756
+Current___Driving_axle_X_L1___std_BaselineDeviation,0.5020698739479167
+Current - Driving axle Y L2 - mean,0.4956798398112802
+Current - Driving axle Y L3 - mean,0.4917557274460889
+Current - Driving axle Y L2 - std,0.4836995809191401
+Current___Driving_axle_X_L1___mean_RollingSTD,0.4784307179470839
+Current___Driving_axle_Y_L3___mean_RollingSTD,0.4681177340211745
+Current___Driving_axle_Y_L1___mean_RollingSTD,0.4674574130649959
+Current___Driving_axle_Y_L2___kurtosis_RollingMean,0.44669870853041754
+Current - Driving axle X L1 - skew,0.4313587108499563
+Current___Driving_axle_Y_L2___std_BaselineDeviation,0.4247552310379822
+Current___Driving_axle_X_L2___max_BaselineDeviation,0.4223296604939749
+Current___Driving_axle_Y_L1___mean_BaselineDeviation,0.4132744084913343
+Current___Driving_axle_Y_L2___mean_BaselineDeviation,0.4125806237229223
+Current___Spindle_L3___kurtosis_RollingSTD,0.4019794184917301
+Current___Spindle_L3___std_RollingMean,0.39588682639659234
+Current___Driving_axle_Y_L1___max_RollingMean,0.39460697355679014
+Current___Driving_axle_Y_L1___max_BaselineDeviation,0.3526666213036869
+Current - Driving axle Y L1 - max,0.3386380040091179
+Accelerometer___Spindle_plusY___min_RollingSTD,0.3375741262854783
+Accelerometer - Y Driving axle -X - std,0.33750458984639964
+Current___Driving_axle_X_L1___skew_BaselineDeviation,0.3352892036891819
+Accelerometer___X_Driving_axle__X___skew_RollingMean,0.3335745684724231
+Accelerometer___Y_Driving_axle__X___kurtosis_RollingMean,0.3309504622872099
+Current___Spindle_L3___kurtosis_RollingMean,0.3267980723810781
+Current___Driving_axle_Y_L2___min_RollingSTD,0.3225068351464284
+Current___Spindle_L2___mean_RollingSTD,0.32154432338522476
+Accelerometer___Spindle__X___max_RollingMean,0.32053661752022433
+Accelerometer - Spindle +Y - skew,0.3188320494501094
